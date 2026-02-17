@@ -64,7 +64,7 @@ const dumpToFile = async (filePath: string) => {
 
   await new Promise((resolve, reject) => {
     exec(
-      `mariadb-dump --ssl-verify-server-cert=off -h ${env.BACKUP_DATABASE_HOST} -P ${env.BACKUP_DATABASE_PORT} -u${env.BACKUP_DATABASE_USERNAME} -p${env.BACKUP_DATABASE_PASSWORD} ${env.BACKUP_DATABASE_NAME} | gzip > ${filePath}`,
+      `mariadb-dump --skip-ssl --single-transaction --quick --skip-lock-tables --routines --events --triggers -h ${env.BACKUP_DATABASE_HOST} -P ${env.BACKUP_DATABASE_PORT} -u${env.BACKUP_DATABASE_USERNAME} -p${env.BACKUP_DATABASE_PASSWORD} ${env.BACKUP_DATABASE_NAME} | gzip > ${filePath}`,
       (error, stdout, stderr) => {
         if (error) {
           reject({ error: error, stderr: stderr.trimEnd() });
